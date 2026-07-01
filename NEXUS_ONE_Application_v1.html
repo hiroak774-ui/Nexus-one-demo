@@ -751,16 +751,8 @@ async function loadApplicationData(){
     console.warn('[NEXUS ONE] application data fallback:', err);
   }
 }
-let requests = [
-  {date:'06/27', type:'打刻修正', memo:'退勤 18:30へ修正', status:'下書き', cls:'draft', action:'draft', seed:'stamp'},
-  {date:'06/26', type:'打刻修正', memo:'退勤 18:30へ修正', status:'承認済', cls:'ok', action:'detail', seed:'stamp', approver:'佐藤 麻衣', comment:'内容確認しました。勤務実績として承認します。'},
-  {date:'06/21', type:'有給休暇', memo:'終日有給', status:'承認待ち', cls:'wait', action:'detail', seed:'leave'},
-  {date:'06/20', type:'休暇申請', memo:'午前半休', status:'承認待ち', cls:'wait', action:'detail', seed:'leave'},
-  {date:'06/18', type:'残業申請', memo:'退勤予定 20:00', status:'承認済', cls:'ok', action:'detail', seed:'overtime', approver:'田中 涼', comment:'業務対応のため承認済みです。お疲れさまでした。'},
-  {date:'06/15', type:'残業申請', memo:'退勤予定 21:00', status:'差戻し', cls:'back', action:'back', seed:'overtime', manager:'佐藤 麻衣', rejectComment:'残業理由をもう少し具体的に記載してください。'},
-  {date:'06/10', type:'打刻修正', memo:'出勤 09:02へ修正', status:'承認済', cls:'ok', action:'detail', seed:'stamp', approver:'佐藤 麻衣', comment:'打刻修正を承認しました。'},
-  {date:'06/06', type:'有給休暇', memo:'終日有給', status:'承認済', cls:'ok', action:'detail', seed:'leave', approver:'田中 涼', comment:'有給休暇として承認しました。'}
-];
+let requests = [];
+
 const statusLabels={ok:'承認済',wait:'承認待ち',draft:'下書き',back:'差戻し'};
 function completionHtml(kind){
   const title = kind==='draft' ? '下書きに保存しました' : '申請を送信しました';
@@ -780,6 +772,7 @@ function statusCountsHtml(){
   return `<div class="history-head"><button class="history-stat" onclick="filteredSheet('ok','inner')"><b>${counts.ok}</b><span>承認済</span></button><button class="history-stat" onclick="filteredSheet('wait','inner')"><b>${counts.wait}</b><span>承認待ち</span></button><button class="history-stat" onclick="filteredSheet('draft','inner')"><b>${counts.draft}</b><span>下書き</span></button><button class="history-stat" onclick="filteredSheet('back','inner')"><b>${counts.back}</b><span>差戻し</span></button></div>`;
 }
 function renderRequestList(items){
+  if(!items.length) return '<div class="empty-state">該当する申請はありません。</div>';
   return `<div class="history-list">${items.map(r=>historyItem(r)).join('')}</div>`;
 }
 
