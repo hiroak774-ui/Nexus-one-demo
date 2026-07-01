@@ -1214,6 +1214,55 @@ body.dark .cancel-btn{background:rgba(255,255,255,.08)}
   .stat { padding: 12px !important; }
 }
 
+
+
+/* =========================================================
+   Mobile production fixes 2026-07-01
+   - Clock seconds never overlap minutes
+   - Avoid automatic geolocation prompt on page load
+   ========================================================= */
+.clock{
+  grid-template-columns:max-content max-content !important;
+  column-gap:clamp(10px,2.8vw,18px) !important;
+  max-width:100% !important;
+}
+.hm{
+  text-align:right !important;
+  overflow:visible !important;
+}
+.sec{
+  position:relative !important;
+  z-index:1 !important;
+  min-width:2.15em !important;
+  text-align:left !important;
+  padding-left:0 !important;
+}
+@media (max-width: 640px), (hover: none) and (pointer: coarse) {
+  .clock{
+    width:100% !important;
+    display:grid !important;
+    grid-template-columns:minmax(0, max-content) max-content !important;
+    justify-content:center !important;
+    column-gap:clamp(12px,3.4vw,20px) !important;
+    padding:0 2px !important;
+  }
+  .hm{
+    font-size:clamp(58px,18.2vw,74px) !important;
+    transform:scaleX(.86) !important;
+    transform-origin:right bottom !important;
+  }
+  .sec{
+    font-size:clamp(18px,5.1vw,22px) !important;
+    padding-bottom:clamp(7px,2.2vw,10px) !important;
+    transform:scaleX(.9) !important;
+    transform-origin:left bottom !important;
+  }
+}
+@media (max-width: 380px) {
+  .hm{font-size:clamp(54px,17vw,66px) !important; transform:scaleX(.82) !important;}
+  .sec{font-size:18px !important; min-width:2.3em !important;}
+}
+
 </style>
 </head>
 <body class="nexus-page-enter">
@@ -1798,6 +1847,8 @@ function setLocationStatus(type, text){
   locationStatus.className = 'location-status ' + type;
   if(type === 'success'){
     locationStatus.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6 9 17l-5-5"/></svg>' + text;
+  } else if(type === 'standby'){
+    locationStatus.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/></svg>' + text;
   } else if(type === 'error'){
     locationStatus.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>' + text;
   } else {
@@ -1845,7 +1896,29 @@ function getCurrentLocation({silent=false, allowCached=true}={}){
     );
   });
 }
-getCurrentLocation({silent:false, allowCached:true});
+function initLocationStatus(){
+  if(isFreshLocation(appState.currentLocation)){
+    setLocationStatus('success','LOCATION READY');
+    return;
+  }
+  // Do not trigger the browser permission dialog on every page load.
+  // If the browser already has location permission, refresh silently.
+  if(navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({name:'geolocation'}).then((result)=>{
+      if(result.state === 'granted'){
+        getCurrentLocation({silent:true, allowCached:true}).then((loc)=>{
+          if(loc) setLocationStatus('success','LOCATION READY');
+          else setLocationStatus('error','LOCATION FAILED');
+        });
+      }else{
+        setLocationStatus('standby','LOCATION STANDBY');
+      }
+    }).catch(()=>setLocationStatus('standby','LOCATION STANDBY'));
+  }else{
+    setLocationStatus('standby','LOCATION STANDBY');
+  }
+}
+initLocationStatus();
 
 function normalizeHomeData(response){
   const data = response.data || response.home || response || {};
