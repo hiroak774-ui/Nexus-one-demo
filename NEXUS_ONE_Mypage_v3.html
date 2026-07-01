@@ -257,42 +257,40 @@ body.light #logoParticleCanvas{opacity:.92}
     <div class="content" id="scrollArea">
       <div class="title-row">
         <div class="title"><h1>マイページ</h1><p>My Page</p></div>
-        <div class="employee-chip" id="employeeChip">EMP-0001</div>
+        <div class="employee-chip" id="employeeChip">—</div>
       </div>
 
       <article class="card">
         <div class="card-head"><div class="card-title">プロフィール</div><div class="card-kicker">Profile</div></div>
         <div class="info-list">
-          <div class="info-row"><div class="label">氏名</div><div class="value" id="profileName">長谷部 浩章</div></div>
-          <div class="info-row"><div class="label">社員ID</div><div class="value" id="profileEmployeeId">EMP-0001</div></div>
-          <div class="info-row"><div class="label">所属会社</div><div class="value" id="profileCompany">HR COMPANY</div></div>
-          <div class="info-row"><div class="label">メールアドレス</div><div class="value" id="profileEmail">hiro@example.com</div></div>
+          <div class="info-row"><div class="label">氏名</div><div class="value" id="profileName">—</div></div>
+          <div class="info-row"><div class="label">社員ID</div><div class="value" id="profileEmployeeId">—</div></div>
+          <div class="info-row"><div class="label">所属会社</div><div class="value" id="profileCompany">—</div></div>
+          <div class="info-row"><div class="label">メールアドレス</div><div class="value" id="profileEmail">—</div></div>
         </div>
       </article>
 
       <article class="card">
         <div class="card-head"><div class="card-title">勤務情報</div><div class="card-kicker">Work</div></div>
         <div class="info-list">
-          <div class="info-row"><div class="label">勤務方式</div><div class="value" id="workType">固定勤務</div></div>
-          <div class="info-row"><div class="label">基本勤務パターン</div><div class="value" id="workPattern">通常勤務</div></div>
-          <div class="info-row"><div class="label">基本勤務時間</div><div class="value" id="workTime">09:00 - 18:00</div></div>
-          <div class="info-row"><div class="label">休憩時間</div><div class="value" id="breakMinutes">60分</div></div>
+          <div class="info-row"><div class="label">勤務方式</div><div class="value" id="workType">—</div></div>
+          <div class="info-row"><div class="label">基本勤務パターン</div><div class="value" id="workPattern">—</div></div>
+          <div class="info-row"><div class="label">基本勤務時間</div><div class="value" id="workTime">—</div></div>
+          <div class="info-row"><div class="label">休憩時間</div><div class="value" id="breakMinutes">—</div></div>
         </div>
       </article>
 
       <article class="card">
         <div class="card-head"><div class="card-title">勤務場所</div><div class="card-kicker">Places</div></div>
         <div class="work-list" id="placeList">
-          <div class="place"><div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-3"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/></svg></div><div><div class="place-name">本社</div><div class="place-meta">横浜駅<br>神奈川県横浜市西区</div></div></div>
-          <div class="place"><div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18"/><path d="M6 12H4a2 2 0 0 0-2 2v8"/><path d="M18 9h2a2 2 0 0 1 2 2v11"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/></svg></div><div><div class="place-name">横浜オフィス</div><div class="place-meta">みなとみらい駅<br>神奈川県横浜市西区みなとみらい</div></div></div>
-          <div class="place"><div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="place-name">A社 常駐先</div><div class="place-meta">品川駅<br>東京都港区港南</div></div></div>
+          <div class="place"><div class="place-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="place-name">勤務場所未登録</div><div class="place-meta">データ取得後に表示されます</div></div></div>
         </div>
         <button class="add-place-btn" id="openAddPlace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14"/><path d="M5 12h14"/></svg>勤務場所を追加</button><div class="api-note" id="mypageStatus"></div>
       </article>
 
       <article class="card">
         <div class="card-head"><div class="card-title">アカウント</div><div class="card-kicker">Account</div></div>
-        <button class="logout-btn">ログアウト</button>
+        <button class="logout-btn" id="logoutBtn" type="button">ログアウト</button>
       </article>
     </div>
 
@@ -484,7 +482,20 @@ function renderMypage(data){
   renderPlaces(payload.places || payload.workLocations || []);
 }
 function redirectToAppEntry(){ location.href = new URL('NEXUS_ONE_App_Entry_v5_final.html', location.href).toString(); }
+function resetMypagePlaceholders(){
+  setText('employeeChip', mypageState.employeeId || '—');
+  setText('profileName', '');
+  setText('profileEmployeeId', mypageState.employeeId || '');
+  setText('profileCompany', '');
+  setText('profileEmail', '');
+  setText('workType', '');
+  setText('workPattern', '');
+  setText('workTime', '');
+  setText('breakMinutes', '');
+  renderPlaces([]);
+}
 async function loadMypage(){
+  resetMypagePlaceholders();
   if(!mypageState.employeeId){
     setMypageStatus('社員IDを確認しています...');
     setTimeout(redirectToAppEntry, 500);
@@ -584,6 +595,26 @@ window.finalizePlace=async function(){
     if(btn){ btn.disabled = false; }
   }
 };
+
+function logoutNexusOne(){
+  const keys = [
+    'nexusEmployeeId','nexusCurrentEmployeeId','employeeId',
+    'nexusUserEmail','nexusLoginEmail','email',
+    'nexusUserName','nexusGoogleName','nexusDisplayName','userName','displayName','googleName','name'
+  ];
+  keys.forEach(key=>{
+    try{ sessionStorage.removeItem(key); }catch(e){}
+    try{ localStorage.removeItem(key); }catch(e){}
+  });
+  try{ sessionStorage.setItem('nexusJustLoggedOut','1'); }catch(e){}
+  location.href = new URL('NEXUS_ONE_Login_Unified_v2.html?logout=1', location.href).toString();
+}
+const logoutBtn = document.getElementById('logoutBtn');
+if(logoutBtn){
+  logoutBtn.addEventListener('click', logoutNexusOne);
+  logoutBtn.addEventListener('touchend', e=>{ e.preventDefault(); logoutNexusOne(); }, { passive:false });
+}
+
 loadMypage();
 </script>
 </body>
