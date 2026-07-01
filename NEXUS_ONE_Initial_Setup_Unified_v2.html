@@ -205,6 +205,98 @@ body{
   .row{padding:10px 2px}
   .cta{height:56px}
 }
+
+/* =========================================================
+   NEXUS ONE production mobile viewport fix
+   - Removes desktop phone mock frame on real smartphones
+   - Uses dynamic viewport height for Safari / LINE in-app browser
+   ========================================================= */
+@media (max-width: 640px), (hover: none) and (pointer: coarse) {
+  html,
+  body {
+    width: 100%;
+    min-height: 100%;
+  }
+
+  body {
+    display: block !important;
+    place-items: unset !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .phone {
+    width: 100vw !important;
+    max-width: none !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .app {
+    height: 100% !important;
+    min-height: 100% !important;
+    padding-top: calc(16px + env(safe-area-inset-top)) !important;
+    padding-right: max(16px, env(safe-area-inset-right)) !important;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom)) !important;
+    padding-left: max(16px, env(safe-area-inset-left)) !important;
+  }
+
+  .header {
+    margin-bottom: 14px !important;
+  }
+
+  .content,
+  .screen-content,
+  .page-content,
+  .scroll-area {
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(104px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .tabbar,
+  .bottom-nav,
+  .nav-bar {
+    left: max(14px, env(safe-area-inset-left)) !important;
+    right: max(14px, env(safe-area-inset-right)) !important;
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    height: 68px !important;
+    border-radius: 26px !important;
+  }
+
+  .sheet,
+  .notify,
+  .bottom-sheet,
+  .modal-sheet {
+    left: max(12px, env(safe-area-inset-left)) !important;
+    right: max(12px, env(safe-area-inset-right)) !important;
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 640px) and (max-height: 760px) {
+  .header { margin-bottom: 10px !important; }
+  .user { margin-top: 2px !important; }
+  .date { margin-top: 6px !important; }
+  .clock-wrap { margin-top: 14px !important; }
+  .hm { font-size: clamp(58px, 18vw, 76px) !important; }
+  .sec { font-size: clamp(18px, 5vw, 24px) !important; }
+  .assist { margin-top: 10px !important; }
+  .panel { margin-top: 16px !important; padding: 14px !important; }
+  .punch-btn { height: 76px !important; }
+  .quick { margin-top: 12px !important; }
+  .stat { padding: 12px !important; }
+}
+
 </style>
 </head>
 <body>
