@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 
   <meta name="theme-color" content="#07152c">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -90,9 +90,9 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  height:42px;
-  padding:0 10px;
-  border-radius:17px;
+  height:44px;
+  padding:0 12px;
+  border-radius:18px;
   box-sizing:border-box;
   background:rgba(15,23,42,.42);
   border:1px solid rgba(148,163,184,.18);
@@ -104,22 +104,22 @@ body{
   position:absolute;
   left:50%;
   top:50%;
-  width:132px;
-  height:76px;
+  width:148px;
+  height:86px;
   transform:translate(-50%,-50%);
   pointer-events:none;
   z-index:-1;
   opacity:.78;
 }
 .brand-logo-img{
-  width:78px;
-  height:38px;
+  width:86px;
+  height:42px;
   object-fit:contain;
   display:block;
   transform:none;
   filter:drop-shadow(0 6px 14px rgba(56,189,248,.16));
 }
-.header-spacer{width:44px;height:42px}
+.header-spacer{width:44px;height:44px}
 .hero{margin:18px 4px 18px;text-align:center;animation:focusIn .85s ease both}
 .hero h1{font-size:40px;line-height:.72;letter-spacing:.13em;color:rgba(226,240,255,.42);font-weight:300;transform:scaleX(1.34) scaleY(.72);transform-origin:center;text-shadow:0 18px 40px rgba(56,189,248,.12)}
 @keyframes focusIn{from{opacity:0;filter:blur(10px);transform:translateY(10px) scale(.98)}to{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}}
@@ -136,7 +136,7 @@ body{
 .meta{min-width:0}.label{font-size:11px;color:var(--soft);font-weight:800;letter-spacing:.08em;margin-bottom:5px}
 .value{font-size:15px;color:var(--ink);font-weight:820;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .text-input{
-  width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-size:15px;font-weight:820;
+  width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-size:16px;font-weight:820;line-height:1.35;
 }
 .text-input::placeholder{color:rgba(148,163,184,.64)}
 .text-input[readonly]{color:rgba(226,240,255,.78)}
@@ -166,12 +166,13 @@ body{
 .sheet-backdrop{position:absolute;inset:0;z-index:7;background:rgba(2,8,23,.18);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.22s ease}
 .sheet-backdrop.show{opacity:1;pointer-events:auto}
 .sheet{
-  position:absolute;left:14px;right:14px;bottom:-390px;z-index:8;border-radius:30px 30px 36px 36px;
+  position:absolute;left:14px;right:14px;bottom:14px;z-index:8;border-radius:30px 30px 36px 36px;
   background:linear-gradient(180deg,rgba(15,23,42,.46),rgba(15,23,42,.28));border:1px solid rgba(255,255,255,.16);box-shadow:0 -22px 60px rgba(2,8,23,.24), inset 0 1px 0 rgba(255,255,255,.12);
   backdrop-filter:blur(28px) saturate(145%);padding:12px 16px 16px;transition:.28s cubic-bezier(.2,.9,.2,1);
+  transform:translateY(calc(100% + 34px));opacity:0;pointer-events:none;
 }
-.sheet.show{bottom:14px}.sheet-head{display:flex;align-items:center;justify-content:flex-end;margin-bottom:2px}
-.sheet-title{display:none}.close{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);width:34px;height:34px;border-radius:14px;font-weight:900;color:rgba(226,240,255,.86)}
+.sheet.show{transform:translateY(0);opacity:1;pointer-events:auto}.sheet-head{display:flex;align-items:center;justify-content:flex-end;margin-bottom:2px}
+.sheet-title{display:none}.close{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);width:38px;height:38px;border-radius:16px;font-size:18px;font-weight:900;color:rgba(226,240,255,.86);position:relative;z-index:2;pointer-events:auto;touch-action:manipulation}
 .option{width:100%;height:50px;border:0;border-bottom:1px solid rgba(148,163,184,.18);background:transparent;text-align:left;font-size:15px;font-weight:780;color:rgba(226,240,255,.92);border-radius:16px;padding:0 14px;transition:.16s ease}
 .option:last-child{border-bottom:0}
 .option.active{background:linear-gradient(135deg,rgba(37,99,235,.28),rgba(56,189,248,.14));color:rgba(226,240,255,.98);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 22px rgba(37,99,235,.13);border-bottom-color:transparent}
@@ -297,6 +298,42 @@ body{
   .stat { padding: 12px !important; }
 }
 
+
+/* Initial setup mobile production refinements */
+@media (max-width: 640px), (hover: none) and (pointer: coarse) {
+  .content {
+    height: 100% !important;
+    padding-top: calc(16px + env(safe-area-inset-top)) !important;
+    padding-right: max(22px, env(safe-area-inset-right)) !important;
+    padding-bottom: calc(22px + env(safe-area-inset-bottom)) !important;
+    padding-left: max(22px, env(safe-area-inset-left)) !important;
+  }
+  .header {
+    grid-template-columns:44px 1fr 44px !important;
+    align-items:center !important;
+    margin-bottom:18px !important;
+  }
+  .icon-btn { width:42px !important; height:42px !important; }
+  .brand-head { height:44px !important; padding:0 12px !important; border-radius:18px !important; }
+  #logoParticleCanvas { width:148px !important; height:86px !important; }
+  .brand-logo-img { width:86px !important; height:42px !important; object-fit:contain !important; }
+  .header-spacer { width:44px !important; height:44px !important; }
+  input, textarea, select, .text-input { font-size:16px !important; }
+  .sheet {
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    transform: translateY(calc(100% + 34px)) !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+    max-height: min(430px, calc(100dvh - 72px - env(safe-area-inset-top) - env(safe-area-inset-bottom))) !important;
+    overflow:auto !important;
+  }
+  .sheet.show {
+    transform: translateY(0) !important;
+    opacity:1 !important;
+    pointer-events:auto !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -343,7 +380,7 @@ body{
           <div class="label">所属会社</div>
           <div class="value" id="companyValue" data-id="HRC">HR COMPANY</div>
         </div>
-        <button class="select-trigger" data-sheet="company">選択<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="select-trigger" type="button" data-sheet="company">選択<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 9 6 6 6-6"/></svg></button>
       </div>
 
       <div class="row work-type-row">
@@ -364,7 +401,7 @@ body{
           <div class="label">基本勤務パターン</div>
           <div class="value" id="patternValue" data-id="WP002">9-18</div>
         </div>
-        <button class="select-trigger" data-sheet="pattern">選択<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="select-trigger" type="button" data-sheet="pattern">選択<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m6 9 6 6 6-6"/></svg></button>
       </div>
 
       <div class="row hidden" id="shiftRow">
@@ -388,7 +425,7 @@ body{
   <div class="sheet" id="sheet">
     <div class="sheet-head">
       <div class="sheet-title" id="sheetTitle">選択</div>
-      <button class="close" id="closeSheet">×</button>
+      <button class="close" id="closeSheet" type="button" aria-label="閉じる">×</button>
     </div>
     <div id="sheetOptions"></div>
   </div>
@@ -611,6 +648,7 @@ document.querySelectorAll('[data-sheet]').forEach(btn => {
     sheetOptions.innerHTML = '';
     data.options.forEach(opt => {
       const option = document.createElement('button');
+      option.type = 'button';
       option.className = 'option';
       option.textContent = opt.label;
       const currentTarget = document.getElementById(data.target);
@@ -628,8 +666,29 @@ document.querySelectorAll('[data-sheet]').forEach(btn => {
     showSheet();
   });
 });
-document.getElementById('closeSheet').onclick = hideSheet;
-sheetBackdrop.onclick = hideSheet;
+const closeSheetBtn = document.getElementById('closeSheet');
+if(closeSheetBtn){
+  closeSheetBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    hideSheet();
+  });
+  closeSheetBtn.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    hideSheet();
+  }, {passive:false});
+}
+if(sheetBackdrop){
+  sheetBackdrop.addEventListener('click', hideSheet);
+  sheetBackdrop.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    hideSheet();
+  }, {passive:false});
+}
+document.addEventListener('keydown', (event) => {
+  if(event.key === 'Escape') hideSheet();
+});
 document.getElementById('submitBtn').onclick = submitSetup;
 document.getElementById('backBtn').onclick = () => transitionTo(LOGIN_URL);
 document.getElementById('doneLoginBtn').onclick = () => transitionTo(LOGIN_URL);
